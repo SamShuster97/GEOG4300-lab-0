@@ -26,6 +26,8 @@ Load these data using the read_csv command. You can copy the code above for the 
 
 ```{r}
 ##Your code goes here.
+county_pop<-read_csv("data/pop_acs18.csv")
+nytimesdata<-read_csv("https://github.com/nytimes/covid-19-data/raw/master/us-counties.csv")
 ```
 
 ## Connecting the data
@@ -38,18 +40,21 @@ county_pop<-county_pop %>%
 ```
 
 Call the function above to rename your data. Now you're ready to join the data.
-
+```{r}
+county_pop
+```
 ### Question 2 (2 points)
 Using inner_join, join the New York Times dataset to the county population one. 
 
 ```{r}
-
+joined_data<-inner_join(county_pop, nytimesdata)
+county_pop
 ```
 
 ### Question 3 (3 points)
 Find some documentation on the inner_join function online or using help in R. How is it different from left_join or full_join? List the source you used for your answer.
 
-{Write your response here.}
+{The inner_join differs from the left_join in that it only retains rows that are shared by both data sets as opposed to retaining all rows from the first data set and then matching the corresponding rows from the second data set. The full_join matches corresponding rows from both data sets and joins them but unlike the left_join, it does not exclude rows from the second data set that do not correspondingly match to any rows in the first data set. I used the cheat sheet for data-transformation provided within the rstudio cloud environment under the learning resources section. Source: "https://rstudio.cloud/learn/cheat-sheets"}
 
 ## Calculating a rate
 Now you can calculate a case rate by county, also using mutate. These are usually reported as cases per 100,000 population You'll need to set up some math that follows the following pattern:
@@ -60,12 +65,13 @@ Now you can calculate a case rate by county, also using mutate. These are usuall
 Use mutate to calculate a case rate per 100,000 people.
 
 ```{r}
-#Your code goes here
+case_rate<-joined_data %>%
+  mutate(Case_rate=cases/estimate * 100000)
 ```
 
 ### Question 5 (1 point)
 Which Georgia county has the *highest* case rate according to your analysis? You can open the dataset and click on the column name for the rate to arrange from high to low. Give the county name, the rate, and the date when this rate was calculated.
 
-{Your answer goes here.}
+{Chattahoochee County appears to have the highest case rate with a rate of 9900.622}
 
 That's it! When you're done with this lab, use the Knit command to render it as a Github markdown document. Then push it up to Github using the procedure outlined in this week's videos.
